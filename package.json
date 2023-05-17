@@ -1,0 +1,21 @@
+{
+  "name": "playwm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexSofft/PlayWM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexSofft/PlayWM/issues"
+  },
+  "homepage": "https://github.com/AlexSofft/PlayWM#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.33.0"
+  }
+}
