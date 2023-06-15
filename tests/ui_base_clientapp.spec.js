@@ -22,6 +22,7 @@ test.describe('TC0001', async () => {
         const loginPage = poManager.getLoginPage()
         const dashboardPage = poManager.getDashboardPage()
         const paymentPage = poManager.getPaymentPage()
+        const cartPage = poManager.getCartPage()
         const orderPage = poManager.getOrderPage()
         const ordersPage = poManager.getOrdersPage()
         // login
@@ -34,9 +35,10 @@ test.describe('TC0001', async () => {
         await dashboardPage.addItemByText(boots)
         await dashboardPage.navigateToCart()
         //TODO: CartPage
-        await page.locator('div li').first().waitFor() // div li only if more than 1 product in the cart
-        await page.locator(`h3:has-text("${zara}")`).isVisible() // isVisible is not AUTOWAIT
-        await page.locator('text="Checkout"').click()
+        // await page.locator('div li').first().waitFor() // div li only if more than 1 product in the cart
+        // await page.locator(`h3:has-text("${zara}")`).isVisible() // isVisible is not AUTOWAIT
+        // await page.locator('text="Checkout"').click()
+        cartPage.checkout(zara)
         //DROPDOWN the country page
         // await page.locator('[placeholder*="Country"]').type('ind', { delay: 100 }) // type slowly to get suggestions dropdown
         // const dropdown = page.locator('.ta-results')
