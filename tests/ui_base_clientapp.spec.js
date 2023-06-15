@@ -1,21 +1,10 @@
 const { test, expect } = require('@playwright/test');
-import LoginPage from '../pom/LoginPage';
-import DashboardPage from '../pom/DashboardPage';
-import OrdersPage from '../pom/OrdersPage';
-import PaymentPage from '../pom/PaymentPage';
-import OrderPage from '../pom/OrderPage';
+import POManager from '../pom/POManager';
 
-// const loginPage = undefined
-// const dashboardPage = null
-// const paymentPage = null
-// const ordersPage = null
-test.describe('TC0001', () => {
+
+test.describe('TC0001', async () => {
     let page = null
-    let loginPage = null
-    let dashboardPage = null
-    let paymentPage = null
-    let orderPage = null;
-    let ordersPage = null
+    let poManager = null
 
     test.beforeAll(async ({ browser }) => {
         const context = await browser.newContext() //// we can set plugins/proxy/cooks(frx: login cooks) to prepare browser instance
@@ -25,14 +14,16 @@ test.describe('TC0001', () => {
         await page.goto('https://rahulshettyacademy.com/client')
     })
 
-    test('browser context playwright test', async ({ browser }) => {
+    test('browser context playwright test', async () => {
         const email = 'qasthpark@gmail.com'
         const password = '!DJplaywright2023'
-        loginPage = new LoginPage(page)
-        dashboardPage = new DashboardPage(page)
-        paymentPage = new PaymentPage(page)
-        orderPage = new OrderPage(page)
-        ordersPage = new OrdersPage(page)
+
+        poManager = new POManager(page);
+        const loginPage = poManager.getLoginPage()
+        const dashboardPage = poManager.getDashboardPage()
+        const paymentPage = poManager.getPaymentPage()
+        const orderPage = poManager.getOrderPage()
+        const ordersPage = poManager.getOrdersPage()
         // login
         await loginPage.validLogin(email, password)
         await page.waitForLoadState('networkidle') // wait for all calls have been made Network-Fetch/XHR tab GOVNO!!!!!
