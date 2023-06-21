@@ -1,20 +1,37 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect, request } = require('@playwright/test');
 import POManager from '../pom/POManager';
-
+const loginData = { userEmail: "qasthpark@gmail.com", userPassword: "!DJplaywright2023" }
+let token;
+let page;
+let poManager;
 
 test.describe('TC0001', async () => {
-    let page = null
-    let poManager = null
-
     test.beforeAll(async ({ browser }) => {
         const context = await browser.newContext() //// we can set plugins/proxy/cooks(frx: login cooks) to prepare browser instance
         page = await context.newPage() // new page
+
+        //API 
+        const apiContext = await request.newContext()
+        const loginResponse = await apiContext.post('https://rahulshettyacademy.com/api/ecom/auth/login',
+            { data: loginData }
+        )
+        expect(loginResponse.ok()).toBeTruthy()
+        const loginResponseJson = await loginResponse.json()
+        token = loginResponseJson.token
+        console.log('TOKEN: ' + token)
+
+        page.addInitScript(value => {
+            window.localStorage.setItem('token', value)
+        }, token
+        )
     })
+
     test.beforeEach(async () => {
         await page.goto('https://rahulshettyacademy.com/client')
     })
 
     test('browser context playwright test', async () => {
+      
         const email = 'qasthpark@gmail.com'
         const password = '!DJplaywright2023'
 
@@ -26,7 +43,7 @@ test.describe('TC0001', async () => {
         const orderPage = poManager.getOrderPage()
         const ordersPage = poManager.getOrdersPage()
         // login
-        await loginPage.validLogin(email, password)
+        // await loginPage.validLogin(email, password)
         await page.waitForLoadState('networkidle') // wait for all calls have been made Network-Fetch/XHR tab GOVNO!!!!!
         //LOOP and add to cart page
         const zara = 'zara coat 3';
@@ -46,13 +63,14 @@ test.describe('TC0001', async () => {
         // const dropOptions = dropdown.locator('button')
         // await selectDropOption(dropOptions, 'India')
         // await page.locator('.action__submit').click()
-        await paymentPage.selectCountry('India')
+        await paymentPage.selectCountry('ind', 'India')
         // ORDER info page
         // await page.waitForTimeout(1000)
         // const orderId = await page.locator('.em-spacer-1 .ng-star-inserted').first().textContent() // paren tag class - child tag class
         // console.log(orderId)
         // await page.locator('button[routerlink*="myorders"]').click()
-        let orderID = await orderPage.submitOrder()
+        let orderID = await orderPage.submitOrderAndGetID()
+        console.log('ORDERID in SPEC: ', orderID)
         // await orderPage.getOrderID()
         // const orderID = orderPage.getOrderID()
         //Orders list page

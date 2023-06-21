@@ -9,14 +9,12 @@ class PaymentPage {
         this.submit = page.locator('.action__submit')
     }
 
-    async selectCountry(text) {
-        await this.countries.type('ind', { delay: 100 })
+    async selectCountry(letters, text) {
+        await this.countries.type(letters, { delay: 100 })
         await this.dropdown.waitFor()
         await selectDropOption(this.dropOptions, text)
         await this.submit.click()
     }
-
-
 }
 
 export default PaymentPage

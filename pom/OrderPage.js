@@ -8,10 +8,10 @@ class OrderPage {
         this.ordersButton = page.locator('button[routerlink*="myorders"]')
     }
 
-    async submitOrder() {
+    async submitOrderAndGetID() {
         await this.page.waitForTimeout(1000)
-        const orderId = this.orderID.first().textContent() // paren tag class - child tag class
-        console.log(this.orderId)
+        const orderId = await this.orderID.first().textContent() // paren tag class - child tag class
+        console.log('ORDERID: ', await orderId)
         await this.ordersButton.click()
         return orderId
     }

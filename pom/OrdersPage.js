@@ -11,7 +11,7 @@ class OrdersPage {
         for (let i = 0; i < await this.rows.count(); i++) {
             let text = await this.rows.nth(i).locator('th').textContent()
             if (orderID.includes(text)) {
-                console.log(text)
+                console.log('ORDERID_TEXT :', text)
                 await this.rows.nth(i).locator('text="View"').click()
                 break;
             }
